@@ -23,7 +23,8 @@ Free · Windows 10 and 11 · No accounts, no sign-in
 ## Wears every song's colours
 
 Logy takes its colours from the cover of the album that is playing. Every song has its own look,
-and Logy changes smoothly when the song does. With no music, it wears its own sunset colours.
+and Logy changes smoothly when the song does. Black, white and grey covers turn it into a
+pearl with a soft rainbow sheen, and with no music it wears its own sunset colours.
 
 <p align="center"><img src="docs/media/colours.png" width="820" alt="Logy in yellow, blue and violet, the colours of three songs"></p>
 
@@ -57,8 +58,8 @@ SoundCloud…), it turns into a little browser window. And you can call it whate
 - **Sleep timer**: the music stops after 15, 30 or 60 minutes and Logy falls asleep.
 - **Steps aside on its own** during games, fullscreen videos and presentations.
 - **Drag it anywhere**: Logy remembers its spot.
-- **Party mode** when the music gets intense, and surprises on your birthday, at Christmas, on New
-  Year's Eve and at Halloween.
+- **Party mode** when the music gets intense, and surprises at Christmas, on New Year's Eve and at
+  Halloween.
 - **Settings** for size, colour, sounds, karaoke, how chatty it is and starting with Windows.
 
 ## Works with
@@ -91,8 +92,6 @@ version).
 ## Credits
 
 - Lyrics provided by [LRCLIB](https://lrclib.net).
-- Inspired by [Coucou](https://github.com/Louis-CFM/coucou) by Louis Raillé. Logy is a new app, with
-  its own character, artwork and sounds.
 - Not affiliated with Spotify. "Spotify" is a registered trademark of Spotify AB.
 
 ## License
