@@ -4,7 +4,7 @@ name: Build
 # (tomasbarbosa/Logy-source), here where Actions minutes are free. The code
 # is only checked out for the build: it is never added to this repository.
 # With "release" ticked, it also publishes the version in tauri.conf.json,
-# for every system or (with "systems" set to windows) for Windows alone.
+# for every system or (with "systems") for Windows or macOS alone.
 #
 # Needs the secret SOURCE_TOKEN: a fine-grained token with "Contents:
 # Read-only" on tomasbarbosa/Logy-source only.
@@ -22,7 +22,7 @@ on:
       systems:
         description: Systems to build (and publish)
         type: choice
-        options: [all, windows]
+        options: [all, windows, macos]
         default: all
 
 permissions:
@@ -55,6 +55,7 @@ jobs:
       - run: cargo test -p logy-core
 
   windows:
+    if: inputs.systems != 'macos'
     runs-on: windows-latest
     needs: test
     steps:
@@ -131,7 +132,7 @@ jobs:
           retention-days: 7
 
   macos:
-    if: inputs.systems == 'all'
+    if: inputs.systems != 'windows'
     runs-on: macos-latest
     needs: test
     steps:
@@ -175,7 +176,7 @@ jobs:
   # The dmg a user downloads, installed and tested on other Macs: an older
   # macOS on Apple silicon, and an Intel Mac.
   macos-install:
-    if: inputs.systems == 'all'
+    if: inputs.systems != 'windows'
     needs: macos
     strategy:
       fail-fast: false
