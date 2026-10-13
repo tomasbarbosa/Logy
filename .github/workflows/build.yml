@@ -1,0 +1,255 @@
+name: Build
+
+# Builds and tests Logy for Windows, macOS and Linux from its private source
+# (tomasbarbosa/Logy-source), here where Actions minutes are free. The code
+# is only checked out for the build: it is never added to this repository.
+# With "release" ticked, it also publishes the version in tauri.conf.json.
+#
+# Needs the secret SOURCE_TOKEN: a fine-grained token with "Contents:
+# Read-only" on tomasbarbosa/Logy-source only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit of the source
+        default: main
+      release:
+        description: Publish a release with the downloads
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  SOURCE: tomasbarbosa/Logy-source
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the access to the source
+        env:
+          TOKEN: ${{ secrets.SOURCE_TOKEN }}
+        run: '[ -n "$TOKEN" ] || { echo "Add the SOURCE_TOKEN secret (see the top of this file)." >&2; exit 1; }'
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.SOURCE_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: cargo test -p logy-core
+
+  windows:
+    runs-on: windows-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.SOURCE_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: swatinem/rust-cache@v2
+      - run: npm ci
+      - run: cargo clippy --workspace -- -D warnings
+      - run: cargo test --workspace
+      - run: npx tauri build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Logy-windows
+          path: target/release/bundle/nsis/*-setup.exe
+          if-no-files-found: error
+          retention-days: 30
+
+  linux:
+    # The oldest supported Ubuntu: the package then also runs on newer ones.
+    runs-on: ubuntu-22.04
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.SOURCE_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: swatinem/rust-cache@v2
+      - name: Install the build and test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev \
+            libasound2-dev patchelf xvfb openbox dbus-x11 pulseaudio pulseaudio-utils xdotool \
+            x11-utils imagemagick python3-dbus python3-gi gir1.2-gtk-3.0
+      - run: npm ci
+      - run: cargo clippy --workspace -- -D warnings
+      - run: cargo test --workspace
+      - run: npx tauri build
+      - name: Install the package, as a user would
+        run: sudo apt-get install -y ./target/release/bundle/deb/*.deb
+      - name: Smoke test the installed app
+        run: scripts/smoke/smoke-linux.sh /usr/bin/logy smoke-linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Logy-linux
+          path: target/release/bundle/deb/*.deb
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-linux
+          path: |
+            smoke-linux/*.png
+            smoke-linux/*.log
+          retention-days: 7
+
+  macos:
+    runs-on: macos-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.SOURCE_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - uses: swatinem/rust-cache@v2
+      - name: Build MediaRemote Adapter
+        run: scripts/build-mediaremote.sh
+      - run: npm ci
+      - run: cargo clippy --workspace -- -D warnings
+      - run: cargo test --workspace
+      - run: npx tauri build --target universal-apple-darwin
+      - name: Smoke test the app
+        run: scripts/smoke/smoke-macos.sh target/universal-apple-darwin/release/bundle/macos/Logy.app smoke-macos
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Logy-macos
+          path: target/universal-apple-darwin/release/bundle/dmg/*.dmg
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-macos
+          path: |
+            smoke-macos/*.png
+            smoke-macos/*.log
+          retention-days: 7
+
+  # The dmg a user downloads, installed and tested on other Macs: an older
+  # macOS on Apple silicon, and an Intel Mac.
+  macos-install:
+    needs: macos
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.SOURCE_TOKEN }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: Logy-macos
+          path: dmg
+      - name: Install from the dmg, as a user would
+        run: |
+          set -eu
+          # Opening the dmg shows the license: agree to it, as the user does.
+          yes | PAGER=cat hdiutil attach dmg/*.dmg -nobrowse -mountpoint /tmp/logy-dmg > /dev/null
+          [ -L /tmp/logy-dmg/Applications ] || { echo "no Applications shortcut in the dmg"; exit 1; }
+          cp -R /tmp/logy-dmg/Logy.app /Applications/
+          hdiutil detach /tmp/logy-dmg
+      - name: Smoke test the installed app
+        run: scripts/smoke/smoke-macos.sh /Applications/Logy.app smoke-macos
+
+  # One file per system, so nobody has to choose: the Windows setup, the
+  # macOS dmg (Apple silicon and Intel) and the Linux deb.
+  publish:
+    if: inputs.release
+    needs: [windows, linux, macos, macos-install]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.SOURCE_TOKEN }}
+          path: source
+      - uses: actions/checkout@v4
+        with:
+          path: public
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Logy-*
+          path: release-out
+          merge-multiple: true
+      - run: ls -l release-out
+      - name: Refresh this page's README, images and license
+        run: |
+          set -euo pipefail
+          VERSION=$(jq -r .version source/src-tauri/tauri.conf.json)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          mkdir -p public/docs/media
+          cp source/README.md source/LICENSE public/
+          cp -f source/docs/media/* public/docs/media/
+          cd public
+          git config user.name "tomasbarbosa"
+          git config user.email "tomasbarbosa72004@gmail.com"
+          git add README.md LICENSE docs/media
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "docs: Logy $VERSION"
+            git push
+          fi
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v$VERSION"
+          notes=source/docs/release/NOTES.md
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            # Publishing a version again (a fix on the same version): replace
+            # its files, drop the ones it no longer has, and update its notes.
+            gh release upload "$tag" release-out/* --clobber --repo "$GITHUB_REPOSITORY"
+            for asset in $(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json assets -q '.assets[].name'); do
+              [ -e "release-out/$asset" ] || gh release delete-asset "$tag" "$asset" --yes --repo "$GITHUB_REPOSITORY"
+            done
+            gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --notes-file "$notes"
+          else
+            gh release create "$tag" release-out/* --repo "$GITHUB_REPOSITORY" --target main \
+              --title "Logy $tag" --notes-file "$notes"
+          fi
