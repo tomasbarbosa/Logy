@@ -4,7 +4,7 @@
 
 # Logy
 
-**Your little music buddy for Windows.**
+**Your little music buddy.**
 
 A little blob that lives on your desktop and comes alive with the music you are playing:
 it dances to the beat, wears the colours of every album cover, sings the lyrics with you and
@@ -12,9 +12,9 @@ reacts to everything you do.
 
 <img src="docs/media/hero.png" width="620" alt="Logy introducing itself: Hi! I'm Logy.">
 
-### [Download for Windows](https://github.com/tomasbarbosa/Logy/releases/latest)
+### [Download](https://github.com/tomasbarbosa/Logy/releases/latest)
 
-Free · Windows 10 and 11 · No accounts, no sign-in
+Free · Windows 10 and 11 · Mac and Linux coming soon · No accounts, no sign-in
 
 </div>
 
@@ -27,6 +27,14 @@ and Logy changes smoothly when the song does. Black, white and grey covers turn 
 pearl with a soft rainbow sheen, and with no music it wears its own sunset colours.
 
 <p align="center"><img src="docs/media/colours.png" width="820" alt="Logy in yellow, blue and violet, the colours of three songs"></p>
+
+## Pick your character
+
+Logy can take another shape: a little devil, a pumpkin, a ghost, a cat or Mi, a musical note.
+Whichever you pick, it keeps its colours, its face and all its moves. Change it in the settings
+and Logy turns into it right away.
+
+<p align="center"><img src="docs/media/characters.png" width="900" alt="Logy as itself, a devil, a pumpkin, a ghost, a cat and Mi, a musical note"></p>
 
 ## Lyrics, tempo and your week in music
 
@@ -47,9 +55,11 @@ poke it too much, takes a bow when a song ends and throws a party when the music
 ## Your buddy, your way
 
 Pause the music and Logy yawns, then falls asleep. When the music comes from a browser (YouTube,
-SoundCloud…), it turns into a little browser window. And you can call it whatever you like.
+SoundCloud…), it turns into a little browser window. And in the settings you choose its
+character, its name, its size, its glow and much more.
 
-<p align="center"><img src="docs/media/modes.png" width="900" alt="Logy asleep, in browser mode and with a new name"></p>
+<p align="center"><img src="docs/media/modes.png" width="900" alt="Logy asleep, in browser mode and as Mi, a musical note"></p>
+<p align="center"><img src="docs/media/settings.png" width="640" alt="The settings, in light and dark mode"></p>
 
 ## And so much more
 
@@ -60,26 +70,33 @@ SoundCloud…), it turns into a little browser window. And you can call it whate
 - **Drag it anywhere**: Logy remembers its spot.
 - **Party mode** when the music gets intense, and surprises at Christmas, on New Year's Eve and at
   Halloween.
-- **Settings** for size, colour, sounds, karaoke, how chatty it is and starting with Windows.
+- **Settings** for its character, size, colour, glow, sounds, karaoke, how chatty it is and starting
+  with your computer.
 
 ## Works with
 
-Spotify (free or Premium), the Windows media player, YouTube and other sites in Chrome, Edge or
-Firefox, and any app that shows up in the Windows media controls. No sign-in to any service.
+Spotify (free or Premium), Apple Music, YouTube and other sites in Chrome, Edge or Firefox,
+and any player that shows up in the Windows media controls. No sign-in to any service.
 
 ## Install
 
-1. Open the [latest release](https://github.com/tomasbarbosa/Logy/releases/latest) and pick:
-   - **`Logy_…_x64-setup.exe`**: the installer, which adds Logy to the Start menu.
-   - **`Logy_…_windows_portable.zip`**: no install; extract the folder and open `Logy.exe`.
+Open the [latest release](https://github.com/tomasbarbosa/Logy/releases/latest) and download the
+installer.
+
+### Windows
+
+1. Download **`Logy_…_x64-setup.exe`** and open it. It adds Logy to the Start menu.
 2. Play some music. Logy shows up on your screen, and its icon sits next to the Windows clock,
    with the settings and the option to quit.
 
 If **"Windows protected your PC"** appears, click **More info**, then **Run anyway**. The warning
 shows because the app is not digitally signed yet.
 
-To uninstall: **Windows Settings → Apps → Logy → Uninstall** (or delete the folder, for the portable
-version).
+To uninstall: **Windows Settings → Apps → Logy → Uninstall**.
+
+### Mac and Linux
+
+Coming soon.
 
 ## Privacy
 
