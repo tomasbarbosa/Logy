@@ -3,7 +3,8 @@ name: Build
 # Builds and tests Logy for Windows, macOS and Linux from its private source
 # (tomasbarbosa/Logy-source), here where Actions minutes are free. The code
 # is only checked out for the build: it is never added to this repository.
-# With "release" ticked, it also publishes the version in tauri.conf.json.
+# With "release" ticked, it also publishes the version in tauri.conf.json,
+# for every system or (with "systems" set to windows) for Windows alone.
 #
 # Needs the secret SOURCE_TOKEN: a fine-grained token with "Contents:
 # Read-only" on tomasbarbosa/Logy-source only.
@@ -18,6 +19,11 @@ on:
         description: Publish a release with the downloads
         type: boolean
         default: false
+      systems:
+        description: Systems to build (and publish)
+        type: choice
+        options: [all, windows]
+        default: all
 
 permissions:
   contents: read
@@ -78,6 +84,7 @@ jobs:
 
   linux:
     # The oldest supported Ubuntu: the package then also runs on newer ones.
+    if: inputs.systems == 'all'
     runs-on: ubuntu-22.04
     needs: test
     steps:
@@ -124,6 +131,7 @@ jobs:
           retention-days: 7
 
   macos:
+    if: inputs.systems == 'all'
     runs-on: macos-latest
     needs: test
     steps:
@@ -167,6 +175,7 @@ jobs:
   # The dmg a user downloads, installed and tested on other Macs: an older
   # macOS on Apple silicon, and an Intel Mac.
   macos-install:
+    if: inputs.systems == 'all'
     needs: macos
     strategy:
       fail-fast: false
@@ -197,7 +206,8 @@ jobs:
   # One file per system, so nobody has to choose: the Windows setup, the
   # macOS dmg (Apple silicon and Intel) and the Linux deb.
   publish:
-    if: inputs.release
+    # Systems left out are skipped; any that failed stops the release.
+    if: inputs.release && !cancelled() && !contains(needs.*.result, 'failure')
     needs: [windows, linux, macos, macos-install]
     runs-on: ubuntu-latest
     permissions:
