@@ -243,6 +243,8 @@ jobs:
           git add README.md LICENSE docs/media
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "docs: Logy $VERSION"
+            # This repository may have changed since the run started.
+            git pull --rebase -q
             git push
           fi
       - name: Publish the release
