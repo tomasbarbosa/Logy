@@ -4,7 +4,7 @@
 
 # Logy
 
-**Your little music buddy.**
+**Your little music buddy for Windows, Mac and Linux.**
 
 A little blob that lives on your desktop and comes alive with the music you are playing:
 it dances to the beat, wears the colours of every album cover, sings the lyrics with you and
@@ -14,7 +14,9 @@ reacts to everything you do.
 
 ### [Download](https://github.com/tomasbarbosa/Logy/releases/latest)
 
-Free · Windows 10 and 11 · Mac and Linux coming soon · No accounts, no sign-in
+Free · Windows 10 and 11 · macOS 11 or newer · Ubuntu, Debian and friends · No accounts, no sign-in
+
+**New to this? Jump to [How to install](#how-to-install): three short steps for each computer.**
 
 </div>
 
@@ -75,28 +77,81 @@ character, its name, its size, its glow and much more.
 
 ## Works with
 
-Spotify (free or Premium), Apple Music, YouTube and other sites in Chrome, Edge or Firefox,
-and any player that shows up in the Windows media controls. No sign-in to any service.
+Spotify (free or Premium), Apple Music, YouTube and other sites in Chrome, Edge, Safari or Firefox,
+and any player your computer shows in its media controls (the Windows media controls, the Mac's
+Now Playing, or MPRIS on Linux). No sign-in to any service.
 
-## Install
+## How to install
 
-Open the [latest release](https://github.com/tomasbarbosa/Logy/releases/latest) and download the
-installer.
+Go to the **[latest release](https://github.com/tomasbarbosa/Logy/releases/latest)**, scroll down to
+**Assets** and download the file for your computer:
 
-### Windows
+| Your computer | Download this file |
+|---|---|
+| 🪟 **Windows** 10 or 11 | **`Logy_…_x64-setup.exe`** |
+| 🍎 **Mac** (Apple chip or Intel), macOS 11 or newer | **`Logy_…_universal.dmg`** |
+| 🐧 **Linux**: Ubuntu, Debian, Linux Mint, Pop!_OS… | **`Logy_…_amd64.deb`** |
 
-1. Download **`Logy_…_x64-setup.exe`** and open it. It adds Logy to the Start menu.
-2. Play some music. Logy shows up on your screen, and its icon sits next to the Windows clock,
-   with the settings and the option to quit.
+Then follow the steps for your computer. Once installed, play some music and Logy shows up at
+the top of your screen.
 
-If **"Windows protected your PC"** appears, click **More info**, then **Run anyway**. The warning
-shows because the app is not digitally signed yet.
+### 🪟 Windows
 
-To uninstall: **Windows Settings → Apps → Logy → Uninstall**.
+1. Open the **`.exe`** file you downloaded.
+2. If a blue window says **"Windows protected your PC"**, click **More info**, then **Run anyway**.
+3. Click **Install**. Logy opens by itself and stays in the Start menu.
 
-### Mac and Linux
+> [!NOTE]
+> That blue warning only shows because Logy isn't signed with a paid certificate yet. It's safe.
 
-Coming soon.
+To uninstall: **Settings → Apps → Logy → Uninstall**.
+
+### 🍎 Mac
+
+1. Open the **`.dmg`** file you downloaded and click **Agree**.
+2. **Drag the Logy icon onto the Applications folder** in the window that opens.
+3. Open the **Terminal** app (press <kbd>⌘ Command</kbd> + <kbd>Space</kbd>, type `Terminal`, press
+   <kbd>Enter</kbd>), paste this line and press <kbd>Enter</kbd>:
+
+   ```
+   xattr -dr com.apple.quarantine /Applications/Logy.app
+   ```
+
+   Nothing shows up when it works. Now open **Logy** from your **Applications** folder.
+
+> [!IMPORTANT]
+> **Why step 3?** Apple blocks apps that aren't registered with its paid developer programme, and
+> recent macOS versions say Logy "is damaged" or "can't be checked". The line above only tells your
+> Mac that you trust Logy. You do it once, and again only when you install a new version.
+>
+> Prefer not to use the Terminal? Try opening Logy, click **Done**, then go to **System Settings →
+> Privacy & Security**, scroll down and click **Open Anyway**. Some Macs don't show that button;
+> then use the Terminal line.
+
+The first time, macOS asks two things. Click **Allow** for both:
+- **Record audio from your Mac**: so Logy can dance to the beat (macOS 14.6 or newer). It only
+  listens; nothing is recorded or sent.
+- **Control Spotify / Music**: so the volume slider works.
+
+Logy's icon sits in the menu bar at the top, with the settings and **Quit**. To uninstall: quit
+Logy and move it from **Applications** to the **Bin**.
+
+### 🐧 Linux
+
+1. Double-click the **`.deb`** file you downloaded. Your software centre opens.
+2. Click **Install** and type your password.
+3. Open **Logy** from your applications menu.
+
+> [!TIP]
+> If double-clicking doesn't open an installer, open the **Terminal** in your Downloads folder and
+> run:
+> ```
+> sudo apt install ./Logy_*_amd64.deb
+> ```
+
+For Ubuntu 22.04 or newer, Debian 12 or newer, Linux Mint 21 or newer, Pop!_OS and others based
+on them. Logy works on X11 and Wayland desktops; its icon sits in the top bar (on GNOME it needs
+the AppIndicator extension, which Ubuntu already has). To uninstall: `sudo apt remove logy`.
 
 ## Privacy
 
