@@ -22,6 +22,22 @@ Free · Windows 10 and 11 · macOS 11 or newer · Ubuntu, Debian and friends · 
 
 ---
 
+## New: a notch for your Windows PC
+
+Drag Logy to the top edge of the screen and it becomes a notch, like the ones on phones and
+Macs. Hover over it and it opens: your music with live lyrics, a timer, your clipboard, the files
+you drop on it and quick controls for Wi-Fi, sound and focus. When an AI coding agent (Claude
+Code, Codex, Gemini…) needs your permission, you allow it right there, without switching windows.
+In a fullscreen game it shrinks to one thin line with your CPU, GPU and temperatures.
+
+<p align="center"><img src="docs/media/notch.gif" width="320" alt="Logy dragged to the top edge, turning into a notch"></p>
+<p align="center"><img src="docs/media/notch.png" width="640" alt="The open notch: the song, its lyrics and the shortcuts"></p>
+<p align="center"><img src="docs/media/notch-moments.png" width="520" alt="An agent asking for permission, dropped files, the clipboard and the game strip"></p>
+
+Your phone can join in too: scan a QR code on the same Wi-Fi to take files from your PC, or turn
+it into a little deck beside the computer, with the time, the album cover, the music controls
+and a trackpad.
+
 ## Wears every song's colours
 
 Logy takes its colours from the cover of the album that is playing. Every song has its own look,
