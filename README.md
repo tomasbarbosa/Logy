@@ -34,6 +34,9 @@ In a fullscreen game it shrinks to one thin line with your CPU, GPU and temperat
 <p align="center"><img src="docs/media/notch.png" width="640" alt="The open notch: the song, its lyrics and the shortcuts"></p>
 <p align="center"><img src="docs/media/notch-moments.png" width="520" alt="An agent asking for permission, dropped files, the clipboard and the game strip"></p>
 
+The sky lives there too: a chip next to the timer opens the weather, tonight's moon and the
+sun's path across the day, and the notch tells you when rain is on its way or the golden hour starts.
+
 Your phone can join in too: scan a QR code on the same Wi-Fi to take files from your PC, or turn
 it into a little deck beside the computer, with the time, the album cover, the music controls
 and a trackpad.
@@ -175,11 +178,15 @@ the AppIndicator extension, which Ubuntu already has). To uninstall: `sudo apt r
   anywhere.
 - To show lyrics, Logy asks [LRCLIB](https://lrclib.net) for them with the song's title and
   artist. Nothing else is sent, and there are no accounts, ads or data collection.
+- For the weather, Logy asks [Open-Meteo](https://open-meteo.com) with your city's position (the
+  city you typed, or the one of your computer's time zone). Sunrise, sunset and the moon are worked
+  out on your computer. You can turn the sky off in the settings.
 - Settings and stats stay on your computer.
 
 ## Credits
 
 - Lyrics provided by [LRCLIB](https://lrclib.net).
+- Weather data by [Open-Meteo](https://open-meteo.com) (CC BY 4.0).
 - Not affiliated with Spotify. "Spotify" is a registered trademark of Spotify AB.
 
 ## License
