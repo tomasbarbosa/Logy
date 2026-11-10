@@ -178,9 +178,10 @@ the AppIndicator extension, which Ubuntu already has). To uninstall: `sudo apt r
   anywhere.
 - To show lyrics, Logy asks [LRCLIB](https://lrclib.net) for them with the song's title and
   artist. Nothing else is sent, and there are no accounts, ads or data collection.
-- For the weather, Logy asks [Open-Meteo](https://open-meteo.com) with your city's position (the
-  city you typed, or the one of your computer's time zone). Sunrise, sunset and the moon are worked
-  out on your computer. You can turn the sky off in the settings.
+- For the weather, Logy asks [Open-Meteo](https://open-meteo.com) with your position: the city you
+  typed or, if you left it empty, Windows location (when it is on) or else the town of your internet
+  connection, named by [BigDataCloud](https://www.bigdatacloud.com). Sunrise, sunset and the moon
+  are worked out on your computer. You can turn the sky off in the settings.
 - Settings and stats stay on your computer.
 
 ## Credits
